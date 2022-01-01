@@ -1,48 +1,50 @@
 package com.nadherarroum.proj_ds.controllers;
-
 import com.nadherarroum.proj_ds.entities.Customer;
 import com.nadherarroum.proj_ds.repositories.CustomerRepo;
 import com.nadherarroum.proj_ds.services.CustomerService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@AllArgsConstructor
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
 
     @Autowired
-    CustomerRepo customerRepo;
+    private CustomerService customerService;
 
-    @Autowired
-    CustomerService customerService;
-
-    @PostMapping(value = "/addCustomer")
-    public Customer addCustomer(@RequestBody Customer customer){
-        return customerService.saveToDB(customer);
+    // DISPLAY Custommers   ------------------------------
+    @GetMapping("/display")
+    public List<Customer> getCustomers(){
+        return customerService.getCustomers();
     }
 
-    @GetMapping(value = "/customers")
-    public List<Customer> customers(){
-        return customerRepo.findAll();
+    // Get Custommer By ID  ------------------------------
+    @GetMapping("/display/{id}")
+    public String getCustomerByID(@PathVariable(name = "id") int id){
+        return customerService.getCustomerByID(id);
     }
 
-    @PutMapping(value = "/updateCustomer/{id}")
-    public Customer updateCustomer(@PathVariable(name = "id") int id, @RequestBody Customer customer){
-        customer.setId(id);
-        return customerRepo.save(customer) ;
+    // ADD NEW Custommer    ------------------------------
+    @PostMapping("/add")
+    public void addCustomer(@RequestBody Customer customer){
+        customerService.addCustomer(customer);
     }
 
-    @DeleteMapping(value = "/deleteCustomer/{id}")
-    public String deleteCustomer(@PathVariable(name = "id") int id){
-        Optional<Customer> customer = customerRepo.findById(id);
-        if (customer.isPresent()){
-            customerRepo.delete(customer.get());
-            return "Custommer id : "+id+" is deleted";
-        }else{
-            throw new RuntimeException("Custommer not found for the id "+id);
-        }
+    // UPDATE Custommer     ------------------------------
+    @PutMapping("/update/{id}")
+    public Customer customer(@PathVariable(name = "id") int id,
+                             @RequestBody Customer customer){
+        return customerService.updateCustomer(id, customer);
+    }
+
+    // DELETE Custommer     ------------------------------
+    @DeleteMapping("/delete/{id}")
+    public void customer(@PathVariable(name = "id") int id){
+        customerService.deleteCustomer(id);
     }
 
 }

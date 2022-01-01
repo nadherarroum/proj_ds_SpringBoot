@@ -2,6 +2,7 @@ package com.nadherarroum.proj_ds.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
 
 import javax.persistence.*;
@@ -23,4 +24,5 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private List<Order> orders;
+
 }
