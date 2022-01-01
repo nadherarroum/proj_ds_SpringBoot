@@ -31,6 +31,8 @@
 - Exécuter les requêtes
 - Sauvegarder le résultat
 
+> NB: La ficier "proj_ds_db.sql" du BD et sous : src\main\resources
+
 ## Architecture
 ````
 ------------------
